@@ -1,59 +1,55 @@
 package com.driver.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
-@Table
 public class Reservation {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  int Id;
+    private  int id;
 
-    private  int numberOfHours ;
+    private int numberOfHours;
+
+    @OneToOne(mappedBy = "reservation",cascade = CascadeType.ALL)
+    private Payment payment;
+
     @ManyToOne
+    @JsonIgnore
     @JoinColumn
     private Spot spot;
 
     @ManyToOne
     @JoinColumn
+    @JsonIgnore
     private User user;
-
-    public Reservation(int numberOfHours, Spot spot, User user) {
-        this.numberOfHours = numberOfHours;
-        this.spot = spot;
-        this.user = user;
-    }
-
-    @OneToOne(mappedBy = "reservation",cascade = CascadeType.ALL)
-    private  Payment payment;
-
-    public Reservation(int numberOfHour, Spot spot) {
-        this.numberOfHours = numberOfHour;
-        this.spot = spot;
-    }
 
     public Reservation() {
     }
 
-    public Reservation(int numberOfHour) {
-        this.numberOfHours = numberOfHour;
-    }
-
     public int getId() {
-        return Id;
+        return id;
     }
 
-    public void setId(int reservationId) {
-        this.Id = reservationId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getNumberOfHours() {
         return numberOfHours;
     }
 
-    public void setNumberOfHours(int numberOfHour) {
-        this.numberOfHours = numberOfHour;
+    public void setNumberOfHours(int numberOfHours) {
+        this.numberOfHours = numberOfHours;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 
     public Spot getSpot() {
@@ -72,11 +68,11 @@ public class Reservation {
         this.user = user;
     }
 
-    public Payment getPayment() {
-        return payment;
+    public Reservation(Integer timeInHours, User user, Spot requiredSpot) {
+        this.numberOfHours=timeInHours;
+        this.user=user;
+        this.spot=requiredSpot;
     }
 
-    public void setPayment(Payment payment) {
-        this.payment = payment;
-    }
+
 }

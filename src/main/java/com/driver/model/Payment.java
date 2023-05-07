@@ -1,51 +1,38 @@
 package com.driver.model;
 
-//import com.sun.tools.javac.jvm.Gen;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 
 @Entity
-@Table
-
 public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int Id;
+    private int id;
 
-    private boolean paymentCompleted;
+    private Boolean paymentCompleted;
+
+    @Enumerated(value = EnumType.STRING)
     private PaymentMode paymentMode;
 
     @OneToOne
     @JoinColumn
+    @JsonIgnore
     private Reservation reservation;
 
-    public Payment(boolean paymentCompleted, PaymentMode paymentMode) {
-        this.paymentCompleted = paymentCompleted;
-        this.paymentMode = paymentMode;
-    }
-
-    public Payment(int paymentId, boolean paymentCompleted, PaymentMode paymentMode) {
-        this.Id = paymentId;
-        this.paymentCompleted = paymentCompleted;
-        this.paymentMode = paymentMode;
-    }
-
     public int getId() {
-        return Id;
+        return id;
     }
 
-    public Payment() {
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setId(int paymentId) {
-        this.Id = paymentId;
-    }
-
-    public boolean isPaymentCompleted() {
+    public Boolean getPaymentCompleted() {
         return paymentCompleted;
     }
 
-    public void setPaymentCompleted(boolean paymentCompleted) {
+    public void setPaymentCompleted(Boolean paymentCompleted) {
         this.paymentCompleted = paymentCompleted;
     }
 
@@ -57,11 +44,23 @@ public class Payment {
         this.paymentMode = paymentMode;
     }
 
+    public Boolean isPaymentCompleted(){return this.paymentCompleted;}
+
     public Reservation getReservation() {
         return reservation;
     }
 
     public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
+    }
+
+    public Payment() {
+    }
+
+    public Payment(int id, Boolean paymentCompleted, PaymentMode paymentMode, Reservation reservation) {
+        this.id = id;
+        this.paymentCompleted = paymentCompleted;
+        this.paymentMode = paymentMode;
         this.reservation = reservation;
     }
 }
